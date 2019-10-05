@@ -1,0 +1,16 @@
+# an example user list, which references the ACL from upsd.conf
+
+# PLEASE NOTE: THIS IS AN EXAMPLE ONLY AND ABSOLUTELY INSECURE
+# YOU MUST CHANGE THE ACL TO MATCH YOUR SPECIFIC NEEDS.
+
+[admin]
+  password = admin
+  actions = SET 
+  instcmds = ALL
+  allowfrom = world localhost
+
+
+[monitor]
+  password = monitor
+  upsmon master
+  allowfrom = world localhost
