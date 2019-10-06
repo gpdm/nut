@@ -6,14 +6,27 @@ This is the **nut-upsd** docker image, which implements the UPS drivers and the 
 
 pull as usual:
 
-> docker pull
+```
+docker pull gpdm/nut-upsd[:<tag>]
+```
 
-then run it:
+tags:
+* **latest** for most recent (but potentially most broken / unstable) build
+* other version-specific tags (if any) for frozen / stable builds
 
-> docker run -p 3493:3493 -v /path/to/nut-config:/etc/nut <name-tbd> 
+then run it as follows:
+
+```
+docker run -d \
+   -p 3493:3493 \
+   -v /path/to/nut-config:/etc/nut \
+   gpdm/nut-upsd[:<tag>] 
+```
 
 
 ## configuration
+
+### main config for upsd
 
 As this docker runs only the UPS drivers and the upsd daemon itself,
 you only need these configuration files:

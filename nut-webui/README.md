@@ -5,12 +5,24 @@ This is the **nut-webui** docker image, which implements the web-based UI for th
 ## how to use
 
 pull as usual:
+ 
+```
+docker pull gpdm/nut-webui[:<tag>]
+```
 
-> docker pull
+tags:
+* **latest** for most recent (but potentially most broken / unstable) build
+* other version-specific tags (if any) for frozen / stable builds
 
-then run it:
+then run it as follows:
 
-> docker run -p 80:80 -v /path/to/nut-config:/etc/nut [-p 443:443 -v /path/to/ssl-certs:/etc/ssl -e SL_PRIVATE_KEY=ssl-cert-snakeoil.key -e SSL_CERTIFICATE=ssl-cert-snakeoil.pem] <name-tbd> 
+```
+docker run -d \
+   -p 80:80 \
+   -v /path/to/nut-config:/etc/nut \
+   [-p 443:443 -v /path/to/ssl-certs:/etc/ssl -e SL_PRIVATE_KEY=ssl-cert-snakeoil.key -e SSL_CERTIFICATE=ssl-cert-snakeoil.pem] \
+   gpdm/nut-webui[:<tag>]
+```
 
 
 ## configuration
