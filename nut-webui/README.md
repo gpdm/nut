@@ -1,4 +1,4 @@
-# nut-upsd
+# nut-webui
 
 This is the **nut-webui** docker image, which implements the web-based UI for the upsd daemon from https://networkupstools.org/.
 
