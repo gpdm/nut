@@ -1,9 +1,9 @@
 #!/bin/sh
 
 cfgVolume="/etc/nut"
-cfgFiles="ups.conf upsd.conf upsd.users"
+cfgFiles="hosts.conf upsset.conf upsstats-single.html upsstats.html"
 
-echo "*** NUT upsd startup ***"
+echo "*** NUT web server startup ***"
 
 # bail out if the config volume is not mounted
 grep ${cfgVolume} /proc/mounts >/dev/null ||
@@ -16,10 +16,16 @@ for cfgFile in ${cfgFiles}; do
 	exit
 done
 
-# initialize UPS driver
-printf "Starting up the UPS drivers ...\n"
-/usr/sbin/upsdrvctl start || { printf "ERROR on driver startup.\n"; exit; }
+# future enhancement: 
+# activate the SSL webserver, when needed 
+# - check env var
+# - check cert files availability
+# - enable the website configuration 
 
-# run the ups daemon
-printf "Startin up the UPS daemon ...\n"
-exec /usr/sbin/upsd || { printf "ERROR on daemon startup.\n"; exit; }
+# run the fcgiwrap daemon
+printf "Starting up the fcgiwrap daemon ...\n"
+service fcgiwrap start || { printf "ERROR on daemon startup.\n"; exit; }
+
+# run nginx
+printf "Starting up the web server ...\n"
+exec nginx -g 'daemon off;'

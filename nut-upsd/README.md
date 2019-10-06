@@ -10,7 +10,7 @@ pull as usual:
 
 then run it:
 
-> docker run -p 3493:3493 -v /path/to/nut-config:/etc/nut b57a6a19c8ed
+> docker run -p 3493:3493 -v /path/to/nut-config:/etc/nut <name-tbd> 
 
 
 ## configuration
@@ -33,7 +33,7 @@ You have to use a config volume as shown:
 
 **The container will fail to start when no volume is mounted, or not all needed files are present!**
 
-Some sample config files are provided for your conventience within the repository at [TBD](....).
+Some sample config files are provided for your conventience in the [master repository](https://github.com/gpdm/nut/tree/master/nut-upsd/files/etc/nut).
 You may use them as a starting point, however I recommed to have a indepth look at the official
 [Network UPS Tools](https://networkupstools.org/) documentation.
 

@@ -1,0 +1,38 @@
+#
+# This is the Alpine-based WebUI docker prototype, which I believe
+# should be used in favor to the larger footprint of the "minideb"-based image.
+#
+# This docker is currently neither working nor finished yet for several reasons:
+# 
+#  1) the Alphine 'nut' package does not provide the CGI tools by default
+#      - either request it from upstream to be included
+#          -or-
+#      - compile it locally at build time, this is what is tried below,
+#        however, there is still an unresolved issue with configure's gdlib
+#        detection.
+#        plus, actually, it should be included with the upstream package anyway
+#
+#   2) no integration / configuration yet prepped for nginx
+#
+
+FROM alpine:edge
+
+RUN apk add --no-cache nginx libgd \
+	build-base perl python autoconf automake libtool alpine-sdk gd-dev && \ 
+    mkdir -p /tmp/nut && \
+    cd /tmp/nut && \
+    wget https://github.com/networkupstools/nut/archive/v2.7.4.tar.gz -O- | tar -xzpvf- --strip 1 && \
+    ./autogen.sh && \ 
+    ./configure --with-cgi && \
+    make && \
+    apk del --no-cache build-base perl python autoconf automake libtool alpine-sdk gd-dev 
+
+COPY files/startup.sh /startup.sh
+
+RUN chmod 700 /startup.sh
+
+RUN mkdir -p /var/run/nut && \
+    chown nut:nut /var/run/nut && \
+    chmod 700 /var/run/nut
+
+ENTRYPOINT ["/startup.sh"]

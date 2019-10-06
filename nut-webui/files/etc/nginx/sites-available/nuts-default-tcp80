@@ -1,0 +1,40 @@
+# our default server running on TCP:80
+#
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	root /var/www/html;
+
+	# Add index.php to the list if you are using PHP
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		try_files $uri $uri/ =404;
+
+		return 301 $scheme://$http_host/cgi-bin/nut/upsstats.cgi;
+	}
+
+	location /cgi-bin/ {
+	  # Disable gzip (it makes scripts feel slower since they have to complete
+	  # before getting gzipped)
+	  gzip off;
+	
+	  # Set the root to /usr/lib (inside this location this means that we are
+	  # giving access to the files under /usr/lib/cgi-bin)
+	  root	/usr/lib;
+	
+	  # Fastcgi socket
+	  fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+	
+	  # Fastcgi parameters, include the standard ones
+	  include /etc/nginx/fastcgi_params;
+	
+	  # Adjust non standard parameters (SCRIPT_FILENAME)
+	  fastcgi_param SCRIPT_FILENAME  /usr/lib$fastcgi_script_name;
+	}
+}

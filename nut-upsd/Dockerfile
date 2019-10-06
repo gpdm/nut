@@ -8,7 +8,7 @@ RUN apk add --no-cache nut
 # rename included config files to .sample, bail out with failure if /etc/nut would not exist
 RUN [ -d /etc/nut ] && find /etc/nut/ -type f -exec mv {} {}.sample \; || false
 
-COPY scripts/startup.sh /startup.sh
+COPY files/startup.sh /startup.sh
 
 RUN chmod 700 /startup.sh
 
