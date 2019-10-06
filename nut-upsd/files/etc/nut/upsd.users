@@ -7,10 +7,8 @@
   password = admin
   actions = SET 
   instcmds = ALL
-  allowfrom = world localhost
 
 
 [monitor]
   password = monitor
   upsmon master
-  allowfrom = world localhost
