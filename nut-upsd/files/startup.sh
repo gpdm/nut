@@ -1,18 +1,18 @@
 #!/bin/sh
 
-cfgVolume="/etc/nut"
-cfgFiles="ups.conf upsd.conf upsd.users"
+nutCfgVolume="/etc/nut"
+nutCfgFiles="ups.conf upsd.conf upsd.users"
 
 echo "*** NUT upsd startup ***"
 
 # bail out if the config volume is not mounted
-grep ${cfgVolume} /proc/mounts >/dev/null ||
-	{ printf "ERROR: It does not look like the config volume is mounted to %s. Have a look at the README for instructions.\n" ${cfgVolume}; exit; }
+grep ${nutCfgVolume} /proc/mounts >/dev/null ||
+	{ printf "ERROR: It does not look like the config volume is mounted to %s. Have a look at the README for instructions.\n" ${nutCfgVolume}; exit; }
 
 # more sanity: make sure our config files stick around
-for cfgFile in ${cfgFiles}; do
-	[ -f ${cfgVolume}/${cfgFile} ] && continue 
-	printf "ERROR: config file '%s/%s' does not exist. You should create one, have a look at the README.\n" ${cfgVolume} ${cfgFile}
+for cfgFile in ${nutCfgFiles}; do
+	[ -f ${nutCfgVolume}/${cfgFile} ] && continue 
+	printf "ERROR: config file '%s/%s' does not exist. You should create one, have a look at the README.\n" ${nutCfgVolume} ${cfgFile}
 	exit
 done
 

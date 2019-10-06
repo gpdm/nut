@@ -1,6 +1,6 @@
 # nut-upsd
 
-This is the **nut-upsmon** docker image, which implements the monitoring for the upsd daemon from https://networkupstools.org/.
+This is the **nut-webui** docker image, which implements the web-based UI for the upsd daemon from https://networkupstools.org/.
 
 ## how to use
 
@@ -10,26 +10,35 @@ pull as usual:
 
 then run it:
 
-> docker run -p 80:80 -p 443:443 -v /path/to/nut-config:/etc/nut <name-tbd> 
+> docker run -p 80:80 -v /path/to/nut-config:/etc/nut [-p 443:443 -v /path/to/ssl-certs:/etc/ssl -e SL_PRIVATE_KEY=ssl-cert-snakeoil.key -e SSL_CERTIFICATE=ssl-cert-snakeoil.pem] <name-tbd> 
 
 
 ## configuration
 
-As this docker runs only the upsmon daemon, 
-you only need these configuration files:
+### ports
+
+This docker runs nginx, and thus exposes the following ports:
+
+* TCP/80 for plain http
+* TCP/443 for tls-secured http (see also section below for enabling TLS/SSL)
+
+
+### main config for upsstats
+
+For the upsstats CGI tools, you need these configuration files:
 
 * [upsset.conf](https://networkupstools.org/docs/man/upsset.conf.html)
 * [hosts.conf](https://networkupstools.org/docs/man/hosts.conf.html)
 * [upsstats.html](https://networkupstools.org/docs/man/upsstats.html.html)
 * [upsstats-single.html](https://networkupstools.org/docs/man/upsstats.html.html)
 
-This docker image cannot be configured through environment variables.
-You have to use a config volume as shown:
+These files cannot be provided through environment variables, 
+you have to use a config volume as shown:
 
 1. create the *upsset.conf*, *hosts.conf*, *upsstats.html* and *upsstats-single.html* config files with your favorite editor
-2. store them into a permanent config directory, e.g. /data/dockers/nut-upsd/config
-3. when running the container, point it mount the config directory as a volume, e.g.
-   `-v /data/dockers/nut-upsd/config:/etc/nut`
+2. store them into a permanent config directory, e.g. /data/dockers/nut-webui/config
+3. when running the container, point it mount the config directory as a volume into **/etc/nut**, e.g.
+   `-v /data/dockers/nut-webui/config:/etc/nut`
 
 **The container will fail to start when no volume is mounted, or not all needed files are present!**
 
@@ -37,3 +46,21 @@ Some sample config files are provided for your conventience in the [master repos
 You may use them as a starting point, however I recommed to have a indepth look at the official
 [Network UPS Tools](https://networkupstools.org/) documentation.
 
+
+### enabling TLS/SSL
+
+For the nginx web server, TLS/SSL can be optionally enabled as well:
+
+1. create a SSL private key and a certificate
+2. store them into a permanent config directory, e.g. /data/dockets/nut-webui/certs
+3. when running the container, point it mount the config directory as a volume into **/etc/ssl**, e.g.
+   `-v /data/dockers/nut-webui/certs:/etc/ssl`
+4. Pass the **SSL_PRIVATE_KEY** environment variable, and point it at the private key file.
+	NOTE: always use a relative path, i.e. `ssl-cert-snakeoil.key` rather than an absolute path, i.e. `/etc/ssl/ssl-cert-snakeoil.key` 
+	NOTE: the permissions on the private could must be set to `0400`
+5. Pass the **SSL_CERTIFIVATE** environment variable, and point it at the certificate file.
+	NOTE: always use a relative path, i.e. `ssl-cert-snakeoil.crt` rather than an absolute path, i.e. `/etc/ssl/ssl-cert-snakeoil.crt` 
+
+**The container will treat an invalid or missing ssl config volume as non-critical error, and just resume without TLS configuration in place.
+If you however have a valid config volume, and both the vars for the private key and the certificate set, any failure during validation
+(wrong file mode, wrong path, etc) will be treated as critical error.**
