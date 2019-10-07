@@ -19,7 +19,7 @@ RUN apt-get update && \
     apt-get clean
 
 COPY files/startup.sh /startup.sh
-COPY files/etc/nginx/sites-available/nut-default-tcp80 files/etc/nginx/sites-available/nut-default-tcp443 /etc/nginx/sites-available
+COPY files/etc/nginx/sites-available/nut-default-tcp80 files/etc/nginx/sites-available/nut-default-tcp443 /etc/nginx/sites-available/
 
 # rename included config files to .sample, bail out with failure if /etc/nut would not exist
 RUN [ -d /etc/nut ] && find /etc/nut/ -type f -regex '.*\.conf$' -exec mv {} {}.sample \; || false
