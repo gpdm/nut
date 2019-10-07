@@ -1,13 +1,25 @@
 FROM bitnami/minideb
 
+MAINTAINER Gianpaolo Del Matto "buildmaint@phunsites.net"
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+    org.label-schema.schema-version = "1.0" \
+    org.label-schema.description = "This is the nut-webui docker image, which implements the web-based UI for Network UPS Tools (NUT)"
+    org.label-schema.name=nut-webui \
+    org.label-schema.vcs-ref=$VCS_REF \
+    org.label-schema.vcs-url=https://github.com/gpdm/nut/tree/master/nut-webui
+
+ENV SSL_PRIVATE_KEY= \
+    SSL_CERTIFICATE=
+
 RUN apt-get update && \
-    apt-get install -y nut-cgi fcgiwrap nginx-light && \
+    apt-get install -y nut-cgi fcgiwrap nginx-light openssl && \
     apt-get auto-remove && \
     apt-get clean
 
 COPY files/startup.sh /startup.sh
-COPY files/etc/nginx/sites-available/nut-default-tcp80 /etc/nginx/sites-available/nut-default-tcp80
-COPY files/etc/nginx/sites-available/nut-default-tcp443 /etc/nginx/sites-available/nut-default-tcp443
+COPY files/etc/nginx/sites-available/nut-default-tcp80 files/etc/nginx/sites-available/nut-default-tcp443 /etc/nginx/sites-available
 
 # rename included config files to .sample, bail out with failure if /etc/nut would not exist
 RUN [ -d /etc/nut ] && find /etc/nut/ -type f -regex '.*\.conf$' -exec mv {} {}.sample \; || false

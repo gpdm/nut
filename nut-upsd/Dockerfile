@@ -1,5 +1,15 @@
 FROM alpine:edge
 
+MAINTAINER Gianpaolo Del Matto "buildmaint@phunsites.net"
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+    org.label-schema.schema-version = "1.0" \
+    org.label-schema.description = "This docker image implements Network UPS Tools (NUT) upsd daemon"
+    org.label-schema.name=nut-upds \
+    org.label-schema.vcs-ref=$VCS_REF \
+    org.label-schema.vcs-url=https://github.com/gpdm/nut/tree/master/nut-upsd
+
 # 'nut' package is only available from testing branch -- add it to the repo list
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
