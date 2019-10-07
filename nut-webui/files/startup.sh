@@ -59,6 +59,21 @@ done
 # activate SSL support if keys are set
 if [ ! -z "${SSL_PRIVATE_KEY}" -a ! -z "${SSL_CERTIFICATE}" ]; then
 
+	# check if key and cert are valid, and match each other
+	#
+	privateKeyModulus=`openssl rsa -noout -modulus -in ${sslCfgVolume}/${SSL_PRIVATE_KEY} 2> /dev/null`
+	certificateModulus=`openssl x509 -noout -modulus -in ${sslCfgVolume}/${SSL_CERTIFICATE} 2> /dev/null`
+
+	if [ -z "${privateKeyModulus}" -o -z "${certificateModulus}" ]; then
+		printf "ERROR: private key and/or certificate seem invalid. Please check file contents.\n"
+		exit
+	fi
+
+	if [ "`echo ${privateKeyModulus} | openssl md5`" != "`echo ${certificateModulus} | openssl md5`" ]; then
+		printf "ERROR: private key and certificate modulus mismatch. The two files may not belong together.\n"
+		exit
+	fi
+
 	# bail out if private key is too permissive
 	if [ "`stat -c '%a' ${sslCfgVolume}/${SSL_PRIVATE_KEY}`" != "400" ]; then
 		printf "ERROR: private key '%s' mode is too permissive. You should restrict to '0400' mask.\n" ${sslCfgVolume}/${SSL_PRIVATE_KEY}
