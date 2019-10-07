@@ -20,7 +20,7 @@ then run it as follows:
 docker run -d \
    -p 80:80 \
    -v /path/to/nut-config:/etc/nut \
-   [-p 443:443 -v /path/to/ssl-certs:/etc/ssl -e SL_PRIVATE_KEY=ssl-cert-snakeoil.key -e SSL_CERTIFICATE=ssl-cert-snakeoil.pem] \
+   [-p 443:443 -v /path/to/ssl-certs:/etc/ssl -e SSL_PRIVATE_KEY=ssl-cert-snakeoil.key -e SSL_CERTIFICATE=ssl-cert-snakeoil.pem] \
    gpdm/nut-webui[:<tag>]
 ```
 
@@ -75,4 +75,9 @@ For the nginx web server, TLS/SSL can be optionally enabled as well:
 
 **The container will treat an invalid or missing ssl config volume as non-critical error, and just resume without TLS configuration in place.
 If you however have a valid config volume, and both the vars for the private key and the certificate set, any failure during validation
-(wrong file mode, wrong path, etc) will be treated as critical error.**
+(wrong file mode, wrong path, wrong modulus, etc) will be treated as critical error.**
+
+
+# TO DO 
+
+* rebuild with Alpine to reduce footprint
