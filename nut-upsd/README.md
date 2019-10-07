@@ -20,6 +20,7 @@ then run it as follows:
 docker run -d \
    -p 3493:3493 \
    -v /path/to/nut-config:/etc/nut \
+   --privileged \
    gpdm/nut-upsd[:<tag>] 
 ```
 
@@ -40,7 +41,7 @@ This docker image cannot be configured through environment variables.
 You have to use a config volume as shown:
 
 1. create the *ups.conf*, *upsd.conf* and *upsd.users* config files with your favorite editor
-2. store them into a permanent config directory, e.g. /data/dockers/nut-upsd/config
+2. store them into a permanent config directory, e.g. `/data/dockers/nut-upsd/config`
 3. when running the container, point it mount the config directory as a volume, e.g.
    `-v /data/dockers/nut-upsd/config:/etc/nut`
 

@@ -2,6 +2,7 @@
 
 This is the **nut-webui** docker image, which implements the web-based UI for the upsd daemon from https://networkupstools.org/.
 
+
 ## how to use
 
 pull as usual:
@@ -48,7 +49,7 @@ These files cannot be provided through environment variables,
 you have to use a config volume as shown:
 
 1. create the *upsset.conf*, *hosts.conf*, *upsstats.html* and *upsstats-single.html* config files with your favorite editor
-2. store them into a permanent config directory, e.g. /data/dockers/nut-webui/config
+2. store them into a permanent config directory, e.g. `/data/dockers/nut-webui/config`
 3. when running the container, point it mount the config directory as a volume into **/etc/nut**, e.g.
    `-v /data/dockers/nut-webui/config:/etc/nut`
 
@@ -64,7 +65,7 @@ You may use them as a starting point, however I recommed to have a indepth look 
 For the nginx web server, TLS/SSL can be optionally enabled as well:
 
 1. create a SSL private key and a certificate
-2. store them into a permanent config directory, e.g. /data/dockets/nut-webui/certs
+2. store them into a permanent config directory, e.g. `/data/dockets/nut-webui/certs`
 3. when running the container, point it mount the config directory as a volume into **/etc/ssl**, e.g.
    `-v /data/dockers/nut-webui/certs:/etc/ssl`
 4. Pass the **SSL_PRIVATE_KEY** environment variable, and point it at the private key file.
@@ -76,6 +77,12 @@ For the nginx web server, TLS/SSL can be optionally enabled as well:
 **The container will treat an invalid or missing ssl config volume as non-critical error, and just resume without TLS configuration in place.
 If you however have a valid config volume, and both the vars for the private key and the certificate set, any failure during validation
 (wrong file mode, wrong path, wrong modulus, etc) will be treated as critical error.**
+
+# Screenshots
+
+![Main View](https://raw.githubusercontent.com/gpdm/nut/nut-webui/docs/main.png)
+
+![Detail View](https://raw.githubusercontent.com/gpdm/nut/nut-webui/docs/detail.png)
 
 
 # TO DO 
