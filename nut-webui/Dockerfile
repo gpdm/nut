@@ -5,7 +5,7 @@ ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.schema-version="1.0" \
-    org.label-schema.description="This is the nut-webui docker image, which implements the web-based UI for Network UPS Tools (NUT)"
+    org.label-schema.description="This is the nut-webui docker image, which implements the web-based UI for Network UPS Tools (NUT)" \
     org.label-schema.name=nut-webui \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/gpdm/nut/tree/master/nut-webui

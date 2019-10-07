@@ -5,8 +5,8 @@ ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.schema-version="1.0" \
-    org.label-schema.description="This docker image implements Network UPS Tools (NUT) upsd daemon"
-    org.label-schema.name=nut-upds \
+    org.label-schema.description="This docker image implements Network UPS Tools (NUT) upsd daemon" \
+    org.label-schema.name=nut-upsd \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/gpdm/nut/tree/master/nut-upsd
 
