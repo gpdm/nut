@@ -12,12 +12,6 @@ Yes I know, there's already other NUT Dockers around, but somehow they didn't re
 
 The UPS daemon docker image, which provides UPS device polling capability.
 
-## nut-upsmon
-
-**comming soon**
-
-The UPS monitoring docker image, which connects to the nut-upsd docker and provides the monitoring facility.
- 
 ## nut-webui
 
 Last but not least, the webui, which provides realtime information and statistics on the UPS overall condition.
