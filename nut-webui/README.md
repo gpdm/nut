@@ -80,9 +80,9 @@ If you however have a valid config volume, and both the vars for the private key
 
 # Screenshots
 
-![Main View](https://raw.githubusercontent.com/gpdm/nut/nut-webui/docs/main.png)
+![Main View](https://raw.githubusercontent.com/gpdm/nut/master/nut-webui/docs/main.png)
 
-![Detail View](https://raw.githubusercontent.com/gpdm/nut/nut-webui/docs/detail.png)
+![Detail View](https://raw.githubusercontent.com/gpdm/nut/master/nut-webui/docs/detail.png)
 
 
 # TO DO 
