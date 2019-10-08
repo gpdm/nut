@@ -42,6 +42,12 @@ for cfgFile in ${nutCfgFiles}; do
 	exit
 done
 
+# bail out if users file is too permissive
+if [ "`stat -c '%a' ${nutCfgVolume}/upsd.users`" != "400" ]; then
+	printf "ERROR: '%s/upsd.users' mode is too permissive. You should restrict to '0400' mask.\n" ${nutCfgVolume}
+	exit
+fi
+
 # initialize UPS driver
 printf "Starting up the UPS drivers ...\n"
 /usr/sbin/upsdrvctl start || { printf "ERROR on driver startup.\n"; exit; }
