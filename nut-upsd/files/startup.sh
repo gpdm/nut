@@ -37,16 +37,24 @@ grep ${nutCfgVolume} /proc/mounts >/dev/null ||
 
 # more sanity: make sure our config files stick around
 for cfgFile in ${nutCfgFiles}; do
-	[ -f ${nutCfgVolume}/${cfgFile} ] && continue 
+	if [ -f ${nutCfgVolume}/${cfgFile} ]; then
+		# bail out if users file is too permissive
+		if [ "`stat -c '%a' ${nutCfgVolume}/${cfgFile}`" != "440" -o "`stat -c '%u' ${nutCfgVolume}/${cfgFile}`" != "`id -u nut`" ]; then
+			printf "ERROR: '%s/%s' mode is too permissive.\n" ${nutCfgVolume} ${cfgFile}
+			printf "\trecommended permissions: 0440\n"
+			printf "\trecommended owner:"
+			id nut
+			printf "\n\ncurrent permissions:\n"
+			stat ${nutCfgVolume}/upsd.users
+			exit
+		fi
+
+		continue
+      	fi 
+
 	printf "ERROR: config file '%s/%s' does not exist. You should create one, have a look at the README.\n" ${nutCfgVolume} ${cfgFile}
 	exit
 done
-
-# bail out if users file is too permissive
-if [ "`stat -c '%a' ${nutCfgVolume}/upsd.users`" != "400" ]; then
-	printf "ERROR: '%s/upsd.users' mode is too permissive. You should restrict to '0400' mask.\n" ${nutCfgVolume}
-	exit
-fi
 
 # initialize UPS driver
 printf "Starting up the UPS drivers ...\n"
