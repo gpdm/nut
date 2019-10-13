@@ -41,11 +41,18 @@ RUN apk add --no-cache nginx libgd \
     apk del --no-cache build-base perl python autoconf automake libtool alpine-sdk gd-dev 
 
 COPY files/startup.sh /startup.sh
+COPY files/healthcheck.sh /healthcheck.sh
 
-RUN chmod 700 /startup.sh
+RUN chmod 700 /startup.sh /healthcheck.sh
 
 RUN mkdir -p /var/run/nut && \
     chown nut:nut /var/run/nut && \
     chmod 700 /var/run/nut
 
 ENTRYPOINT ["/startup.sh"]
+
+HEALTHCHECK --interval=60s --timeout=5s \
+    CMD /healthcheck.sh
+
+EXPOSE 80
+EXPOSE 443

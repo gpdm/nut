@@ -26,6 +26,8 @@
 #  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+SSL_PRIVATE_KEY=${SSL_PRIVATE_KEY:-"private/ssl-cert-snakeoil.key"}
+SSL_CERTIFICATE=${SSL_CERTIFICATE:-"certs/ssl-cert-snakeoil.pem"}
 sslCfgVolume="/etc/ssl"
 sslCfgFiles="${SSL_PRIVATE_KEY} ${SSL_CERTIFICATE}"
 nginxCertificatesConf="/etc/nginx/snippets/tls-certificates.conf"
@@ -37,9 +39,9 @@ echo "*** NUT web server startup ***"
 
 # bail out if the config volume is not mounted
 grep ${nutCfgVolume} /proc/mounts >/dev/null ||
-	{ printf "ERROR: It does not look like the config volume is mounted to %s. Have a look at the README for instructions.\n" ${nutCfgVolume}; exit; }
+	{ printf "ERROR: It does not look like the config volume is mounted to %s.\nHave a look at the README for instructions.\n" ${nutCfgVolume}; exit; }
 grep ${sslCfgVolume} /proc/mounts >/dev/null ||
-	printf "WARN: It does not look like the config volume is mounted to %s. Have a look at the README for instructions on SSL/TLS support.\n" ${sslCfgVolume};
+	printf "WARN: It does not look like the config volume is mounted to %s.\nHave a look at the README for instructions on how to use individual certificates.\nWe will use self-signed certificates for HTTPS." ${sslCfgVolume};
 
 # more sanity: make sure our config files stick around
 for cfgFile in ${nutCfgFiles}; do
@@ -75,8 +77,9 @@ if [ ! -z "${SSL_PRIVATE_KEY}" -a ! -z "${SSL_CERTIFICATE}" ]; then
 	fi
 
 	# bail out if private key is too permissive
-	if [ "`stat -c '%a' ${sslCfgVolume}/${SSL_PRIVATE_KEY}`" != "400" ]; then
-		printf "ERROR: private key '%s' mode is too permissive. You should restrict to '0400' mask.\n" ${sslCfgVolume}/${SSL_PRIVATE_KEY}
+	stat -c '%a' ${sslCfgVolume}/${SSL_PRIVATE_KEY} | grep -Ee '^(4|6)(4|0)0$' > /dev/null
+	if [ "$?" != "0" ]; then
+		printf "ERROR: private key '%s' mode is too permissive.\n" ${sslCfgVolume}/${SSL_PRIVATE_KEY}
 		exit
 	fi
 	

@@ -70,13 +70,13 @@ For the nginx web server, TLS/SSL can be optionally enabled as well:
    `-v /data/dockers/nut-webui/certs:/etc/ssl`
 4. Pass the **SSL_PRIVATE_KEY** environment variable, and point it at the private key file.
    Always use a relative path, i.e. `ssl-cert-snakeoil.key` rather than an absolute path, i.e. `/etc/ssl/ssl-cert-snakeoil.key` 
-   The permissions on the private must be set to `0400`.
+   The permissions on the private must be set to `0600, 0400 or 0640`.
 5. Pass the **SSL_CERTIFIVATE** environment variable, and point it at the certificate file.
    Always use a relative path, i.e. `ssl-cert-snakeoil.crt` rather than an absolute path, i.e. `/etc/ssl/ssl-cert-snakeoil.crt` 
 
-**The container will treat an invalid or missing ssl config volume as non-critical error, and just resume without TLS configuration in place.
-If you however have a valid config volume, and both the vars for the private key and the certificate set, any failure during validation
-(wrong file mode, wrong path, wrong modulus, etc) will be treated as critical error.**
+**The container will treat an absent ssl config volume as non-critical error, and resume with internal self-signed certificates.**
+
+**When you provide a config volume, and both the vars for the private key and the certificate are set, any failure during startup validation (wrong file mode, wrong path, wrong modulus, etc) will be treated as critical error.**
 
 # Screenshots
 
