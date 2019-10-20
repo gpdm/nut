@@ -35,7 +35,7 @@ RUN chmod 700 /startup.sh /healthcheck.sh
 
 ENTRYPOINT ["/startup.sh"]
 
-HEALTHCHECK --interval=60s --timeout=5s \
+HEALTHCHECK --interval=10s --timeout=5s \
     CMD /healthcheck.sh
 
 EXPOSE 80
