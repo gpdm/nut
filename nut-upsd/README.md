@@ -51,7 +51,13 @@ You have to use a config volume as shown:
 
 1. create the *ups.conf*, *upsd.conf* and *upsd.users* config files with your favorite editor
 2. store them into a permanent config directory, e.g. `/data/dockers/nut-upsd/config`
-3. when running the container, point it mount the config directory as a volume, e.g.
+3. apply proper file permissions and ownership
+ ```
+   cd /data/dockers/nut-upsd/config
+   chmod 0400 ups.conf upsd.conf upsd.users
+   chown 1000:1001 ups.conf upsd.conf upsd.users
+ ```
+4. when running the container, point it mount the config directory as a volume, e.g.
    `-v /data/dockers/nut-upsd/config:/etc/nut`
 
 **The container will fail to start when no volume is mounted, or not all needed files are present!**
