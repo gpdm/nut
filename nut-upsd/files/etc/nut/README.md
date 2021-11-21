@@ -15,7 +15,7 @@ to 1000 and 1001 respetively.
 ```
 cd /path/to/nut-config
 chmod 0440 ups.conf upsd.conf upsd.users
-chown 1000:1001 ups.conf upsd.conf upsd.users
+chown 100:101 ups.conf upsd.conf upsd.users
 ```
 
 You use this examples at your own risk.
