@@ -62,4 +62,4 @@ printf "Starting up the UPS drivers ...\n"
 
 # run the ups daemon
 printf "Starting up the UPS daemon ...\n"
-exec /usr/sbin/upsd -D || { printf "ERROR on daemon startup.\n"; exit; }
+exec /usr/sbin/upsd -D $* || { printf "ERROR on daemon startup.\n"; exit; }
