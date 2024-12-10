@@ -18,6 +18,12 @@ RUN apk add --no-cache nut
 # rename included config files to .sample, bail out with failure if /etc/nut would not exist
 RUN [ -d /etc/nut ] && find /etc/nut/ -type f -exec mv {} {}.sample \; || false
 
+# fix some missing links to .so files, which are required to run 'nut-scanner' utility
+RUN find /usr/lib/ -type f -name 'libusb*' -exec ln -sf {} /usr/lib/libusb-1.0.so \; || false
+RUN find /usr/lib/ -type f -name 'libnetsnmp*' -exec ln -sf {} /usr/lib/libnetsnmp.so \; || false
+RUN find /usr/lib/ -type f -name 'libupsclient*' -exec ln -sf {} /usr/lib/libupsclient.so \; || false
+RUN find /usr/lib/ -type f -name 'libneon*' -exec ln -sf {} /usr/lib/libneon.so \; || false
+
 COPY files/startup.sh /startup.sh
 
 RUN chmod 700 /startup.sh
