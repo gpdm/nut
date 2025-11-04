@@ -54,7 +54,7 @@ You have to use a config volume as shown:
 3. apply proper file permissions and ownership
  ```
    cd /data/dockers/nut-upsd/config
-   chmod 0400 ups.conf upsd.conf upsd.users
+   chmod 0440 ups.conf upsd.conf upsd.users
    chown 100:101 ups.conf upsd.conf upsd.users
  ```
 4. when running the container, point it mount the config directory as a volume, e.g.
